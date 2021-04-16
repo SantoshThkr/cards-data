@@ -145,6 +145,26 @@
   color: #991b1b;
 }
 
+.badge-active {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-low-stock {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.badge-out-of-stock {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.empty {
+  color: #6b7280;
+  margin: 0;
+}
+
 /* Tablet */
 
 @media (max-width: 1024px) {

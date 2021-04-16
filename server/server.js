@@ -9,6 +9,7 @@ const app = express();
 
 app.use(express.json());
 
+app.use('/api/products', require('./routes/products'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 
 mongoose
