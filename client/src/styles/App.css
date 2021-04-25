@@ -46,6 +46,51 @@
   margin: 0 0 24px;
 }
 
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.success {
+  background-color: #d1fae5;
+  color: #065f46;
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin: 0 0 16px;
+}
+
+/* Buttons */
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: #e5e7eb;
+}
+
+.btn-small {
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
 /* Cards and stats */
 
 .card {
@@ -192,6 +237,35 @@
   border-color: #2563eb;
 }
 
+.product-form {
+  margin-bottom: 24px;
+  max-width: 600px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 /* Tablet */
 
 @media (max-width: 1024px) {
@@ -237,5 +311,10 @@
 
   .toolbar input {
     max-width: none;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
   }
 }
