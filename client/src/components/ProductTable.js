@@ -1,4 +1,4 @@
-function ProductTable({ products, onEdit }) {
+function ProductTable({ products, onEdit, onDelete }) {
   if (products.length === 0) {
     return <p className="empty">No products found.</p>;
   }
@@ -35,6 +35,12 @@ function ProductTable({ products, onEdit }) {
               <td>
                 <button className="btn btn-small" onClick={() => onEdit(product)}>
                   Edit
+                </button>
+                <button
+                  className="btn btn-small btn-danger"
+                  onClick={() => onDelete(product)}
+                >
+                  Delete
                 </button>
               </td>
             </tr>

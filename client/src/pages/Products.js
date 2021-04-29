@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import ProductTable from '../components/ProductTable';
 import ProductForm from '../components/ProductForm';
-import { getProducts, createProduct, updateProduct } from '../services/api';
+import {
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from '../services/api';
 
 const categories = ['Electronics', 'Clothing', 'Accessories'];
 
@@ -45,6 +50,20 @@ function Products() {
       setMessage('Product added successfully.');
     }
     closeForm();
+  };
+
+  const handleDelete = async (product) => {
+    if (!window.confirm('Are you sure you want to delete this product?')) {
+      return;
+    }
+
+    await deleteProduct(product.id);
+    setProducts(products.filter((p) => p.id !== product.id));
+    setMessage('Product deleted successfully.');
+
+    if (editingProduct && editingProduct.id === product.id) {
+      closeForm();
+    }
   };
 
   const filteredProducts = products.filter((product) => {
@@ -100,7 +119,11 @@ function Products() {
           </select>
         </div>
 
-        <ProductTable products={filteredProducts} onEdit={openEditForm} />
+        <ProductTable
+          products={filteredProducts}
+          onEdit={openEditForm}
+          onDelete={handleDelete}
+        />
       </div>
     </div>
   );

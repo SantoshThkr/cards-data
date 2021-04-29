@@ -86,9 +86,18 @@
   background-color: #e5e7eb;
 }
 
+.btn-danger {
+  background-color: #dc2626;
+  color: #fff;
+}
+
 .btn-small {
   padding: 5px 10px;
   font-size: 13px;
+}
+
+.btn-small + .btn-small {
+  margin-left: 6px;
 }
 
 /* Cards and stats */
