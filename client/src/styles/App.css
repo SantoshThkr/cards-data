@@ -214,6 +214,16 @@
   color: #991b1b;
 }
 
+.status-select {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
 .empty {
   color: #6b7280;
   margin: 0;

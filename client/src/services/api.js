@@ -26,3 +26,13 @@ export const updateProduct = async (id, product) => {
 export const deleteProduct = async (id) => {
   await axios.delete(`${API_URL}/products/${id}`);
 };
+
+export const getOrders = async () => {
+  const response = await axios.get(`${API_URL}/orders`);
+  return response.data;
+};
+
+export const updateOrderStatus = async (id, status) => {
+  const response = await axios.put(`${API_URL}/orders/${id}`, { status });
+  return response.data;
+};
