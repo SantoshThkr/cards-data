@@ -36,3 +36,8 @@ export const updateOrderStatus = async (id, status) => {
   const response = await axios.put(`${API_URL}/orders/${id}`, { status });
   return response.data;
 };
+
+export const getCustomers = async () => {
+  const response = await axios.get(`${API_URL}/customers`);
+  return response.data;
+};
