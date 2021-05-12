@@ -61,6 +61,19 @@
   margin: 0 0 16px;
 }
 
+.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin: 0 0 16px;
+}
+
+.loading {
+  color: #6b7280;
+  margin: 0;
+}
+
 /* Buttons */
 
 .btn {
@@ -274,6 +287,12 @@
   margin-bottom: 6px;
 }
 
+.field-error {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
 .form-row {
   display: flex;
   gap: 12px;
@@ -332,7 +351,13 @@
     max-width: none;
   }
 
-  .form-row {
+  .field-error {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.form-row {
     flex-direction: column;
     gap: 0;
   }

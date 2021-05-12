@@ -8,6 +8,32 @@ const emptyForm = {
   description: '',
 };
 
+const validate = (form) => {
+  const errors = {};
+
+  if (!form.name.trim()) {
+    errors.name = 'Product name is required.';
+  }
+
+  if (!form.category) {
+    errors.category = 'Category is required.';
+  }
+
+  if (form.price === '') {
+    errors.price = 'Price is required.';
+  } else if (isNaN(form.price) || Number(form.price) < 0) {
+    errors.price = 'Price must be a valid number.';
+  }
+
+  if (form.stock === '') {
+    errors.stock = 'Stock is required.';
+  } else if (!Number.isInteger(Number(form.stock)) || Number(form.stock) < 0) {
+    errors.stock = 'Stock must be a whole number.';
+  }
+
+  return errors;
+};
+
 function ProductForm({ product, categories, onSubmit, onCancel }) {
   const [form, setForm] = useState(
     product
@@ -20,6 +46,7 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
         }
       : emptyForm
   );
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,6 +54,13 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const formErrors = validate(form);
+    setErrors(formErrors);
+    if (Object.keys(formErrors).length > 0) {
+      return;
+    }
+
     onSubmit({
       ...form,
       name: form.name.trim(),
@@ -36,7 +70,7 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
   };
 
   return (
-    <form className="card product-form" onSubmit={handleSubmit}>
+    <form className="card product-form" onSubmit={handleSubmit} noValidate>
       <h2 className="card-title">{product ? 'Edit Product' : 'Add Product'}</h2>
 
       <div className="form-group">
@@ -48,6 +82,7 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
           value={form.name}
           onChange={handleChange}
         />
+        {errors.name && <span className="field-error">{errors.name}</span>}
       </div>
 
       <div className="form-group">
@@ -66,6 +101,9 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
             </option>
           ))}
         </select>
+        {errors.category && (
+          <span className="field-error">{errors.category}</span>
+        )}
       </div>
 
       <div className="form-row">
@@ -80,6 +118,7 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
             value={form.price}
             onChange={handleChange}
           />
+          {errors.price && <span className="field-error">{errors.price}</span>}
         </div>
 
         <div className="form-group">
@@ -92,6 +131,7 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
             value={form.stock}
             onChange={handleChange}
           />
+          {errors.stock && <span className="field-error">{errors.stock}</span>}
         </div>
       </div>
 

@@ -1,16 +1,34 @@
 import { useEffect, useState } from 'react';
 import StatCard from '../components/StatCard';
+import Loading from '../components/Loading';
+import ErrorMessage from '../components/ErrorMessage';
 import { getDashboard } from '../services/api';
 
 function Dashboard() {
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    getDashboard().then(setData);
+    const loadDashboard = async () => {
+      try {
+        setData(await getDashboard());
+      } catch (err) {
+        setError('Unable to load dashboard.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDashboard();
   }, []);
 
-  if (!data) {
-    return null;
+  if (loading) {
+    return <Loading text="Loading dashboard..." />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} />;
   }
 
   return (

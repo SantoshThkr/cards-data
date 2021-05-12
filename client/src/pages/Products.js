@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import ProductTable from '../components/ProductTable';
 import ProductForm from '../components/ProductForm';
+import Loading from '../components/Loading';
+import ErrorMessage from '../components/ErrorMessage';
 import {
   getProducts,
   createProduct,
@@ -12,6 +14,8 @@ const categories = ['Electronics', 'Clothing', 'Accessories'];
 
 function Products() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [showForm, setShowForm] = useState(false);
@@ -19,19 +23,31 @@ function Products() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    getProducts().then(setProducts);
+    const loadProducts = async () => {
+      try {
+        setProducts(await getProducts());
+      } catch (err) {
+        setError('Unable to load products.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
   }, []);
 
   const openAddForm = () => {
     setEditingProduct(null);
     setShowForm(true);
     setMessage('');
+    setError('');
   };
 
   const openEditForm = (product) => {
     setEditingProduct(product);
     setShowForm(true);
     setMessage('');
+    setError('');
   };
 
   const closeForm = () => {
@@ -40,16 +56,22 @@ function Products() {
   };
 
   const handleSave = async (formData) => {
-    if (editingProduct) {
-      const updated = await updateProduct(editingProduct.id, formData);
-      setProducts(products.map((p) => (p.id === updated.id ? updated : p)));
-      setMessage('Product updated successfully.');
-    } else {
-      const created = await createProduct(formData);
-      setProducts([...products, created]);
-      setMessage('Product added successfully.');
+    setError('');
+
+    try {
+      if (editingProduct) {
+        const updated = await updateProduct(editingProduct.id, formData);
+        setProducts(products.map((p) => (p.id === updated.id ? updated : p)));
+        setMessage('Product updated successfully.');
+      } else {
+        const created = await createProduct(formData);
+        setProducts([...products, created]);
+        setMessage('Product added successfully.');
+      }
+      closeForm();
+    } catch (err) {
+      setError('Unable to save product.');
     }
-    closeForm();
   };
 
   const handleDelete = async (product) => {
@@ -57,12 +79,19 @@ function Products() {
       return;
     }
 
-    await deleteProduct(product.id);
-    setProducts(products.filter((p) => p.id !== product.id));
-    setMessage('Product deleted successfully.');
+    setError('');
+    setMessage('');
 
-    if (editingProduct && editingProduct.id === product.id) {
-      closeForm();
+    try {
+      await deleteProduct(product.id);
+      setProducts(products.filter((p) => p.id !== product.id));
+      setMessage('Product deleted successfully.');
+
+      if (editingProduct && editingProduct.id === product.id) {
+        closeForm();
+      }
+    } catch (err) {
+      setError('Unable to delete product.');
     }
   };
 
@@ -84,6 +113,7 @@ function Products() {
       </div>
 
       {message && <p className="success">{message}</p>}
+      {error && <ErrorMessage message={error} />}
 
       {showForm && (
         <ProductForm
@@ -119,11 +149,15 @@ function Products() {
           </select>
         </div>
 
-        <ProductTable
-          products={filteredProducts}
-          onEdit={openEditForm}
-          onDelete={handleDelete}
-        />
+        {loading ? (
+          <Loading text="Loading products..." />
+        ) : (
+          <ProductTable
+            products={filteredProducts}
+            onEdit={openEditForm}
+            onDelete={handleDelete}
+          />
+        )}
       </div>
     </div>
   );
